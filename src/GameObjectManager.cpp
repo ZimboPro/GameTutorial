@@ -1,5 +1,6 @@
 #include <GameObjectManager.hpp>
 #include <Game.hpp>
+#include <iostream>
 
 GameObjectManager::GameObjectManager()
 {}
@@ -27,7 +28,7 @@ void GameObjectManager::Remove(std::string name)
 VisibleGameObject * GameObjectManager::Get(std::string name) const
 {
     std::map<std::string, VisibleGameObject *>::const_iterator results = this->_objects.find(name);
-    if (results != this->_objects.end())
+    if (results == this->_objects.end())
         return NULL;
     return results->second;
 }

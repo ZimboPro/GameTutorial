@@ -6,6 +6,7 @@
 
 Game::GameState Game::_gameState = GameState::Uninitialized;
 sf::RenderWindow Game::_window;
+sf::Event Game::_event;
 GameObjectManager Game::_manager;
 int Game::SCREEN_HEIGHT = 764;
 int Game::SCREEN_WIDTH = 1024;
@@ -56,45 +57,40 @@ sf::RenderWindow & Game::GetWindow()
 
 sf::Event Game::GetInput()
 {
-    sf::Event event;
-    _window.pollEvent(event);
-    return event;
+    return _event;
 }
 
 void Game::GameLoop()
 {
-    sf::Event event;
-    while (_window.pollEvent(event))
+    _window.pollEvent(_event);
+    switch (_gameState)
     {
-        switch (_gameState)
+        case GameState::Playing:
         {
-            case GameState::Playing:
-            {
-                _window.clear(sf::Color(0, 0, 0));
-                _manager.UpdateAll();
-                _manager.DrawAll(_window);
-                _window.display();
+            _window.clear(sf::Color(0, 0, 0));
+            _manager.UpdateAll();
+            _manager.DrawAll(_window);
+            _window.display();
 
-                if (event.type == sf::Event::Closed)
-                    _gameState = GameState::Exiting;
-                if (event.type == sf::Event::KeyPressed)
-                {
-                    if (event.key.code == sf::Keyboard::Escape)
-                        ShowMainMenu();
-                }
-                break;
-            }
-            case GameState::ShowingSplash:
+            if (_event.type == sf::Event::Closed)
+                _gameState = GameState::Exiting;
+            if (_event.type == sf::Event::KeyPressed)
             {
-                ShowSplashScreen();
-                
-                break;
+                if (_event.key.code == sf::Keyboard::Escape)
+                    ShowMainMenu();
             }
-            case GameState::ShowingMenu:
-            {
-                ShowMainMenu();
-                break;
-            }
+            break;
+        }
+        case GameState::ShowingSplash:
+        {
+            ShowSplashScreen();
+            
+            break;
+        }
+        case GameState::ShowingMenu:
+        {
+            ShowMainMenu();
+            break;
         }
     }
 }
@@ -119,4 +115,9 @@ void Game::ShowMainMenu()
         _gameState = Game::Playing;
         break;
     }
+}
+
+GameObjectManager & Game::GetGameObjectManager()
+{
+    return _manager;
 }

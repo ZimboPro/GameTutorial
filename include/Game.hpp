@@ -11,6 +11,7 @@ class Game
         static void Start();
         static sf::RenderWindow & GetWindow();
         static sf::Event GetInput();
+        static GameObjectManager & GetGameObjectManager();
         static int SCREEN_WIDTH;
         static int SCREEN_HEIGHT;
 
@@ -30,6 +31,7 @@ class Game
         static GameState _gameState;
         static sf::RenderWindow _window;
         static GameObjectManager _manager;
+        static sf::Event _event;
 };
 
 #endif
