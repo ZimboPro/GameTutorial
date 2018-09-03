@@ -2,10 +2,13 @@
 #include <SplashScreen.hpp>
 #include <MainMenu.hpp>
 #include <PlayerPaddle.hpp>
+#include <GameBall.hpp>
 
 Game::GameState Game::_gameState = GameState::Uninitialized;
 sf::RenderWindow Game::_window;
 GameObjectManager Game::_manager;
+int Game::SCREEN_HEIGHT = 764;
+int Game::SCREEN_WIDTH = 1024;
 
 Game::Game()
 {}
@@ -18,7 +21,7 @@ void Game::Start()
     if (_gameState != GameState::Uninitialized)
         return;
     
-    _window.create(sf::VideoMode(1024, 768, 32), "Pang!");
+    _window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Pang!");
     _gameState = Game::ShowingSplash;
 
     PlayerPaddle * player1 = new PlayerPaddle();
@@ -26,6 +29,11 @@ void Game::Start()
     player1->SetPosition((1024 >> 1) - 45, 700);
 
     _manager.Add("Paddle1", player1);
+
+    GameBall * ball = new GameBall();
+    ball->SetPosition(SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1);
+
+    _manager.Add("Ball", ball);
 
     while(!IsExiting())
     {
@@ -41,6 +49,18 @@ bool Game::IsExiting()
     return false;
 }
 
+sf::RenderWindow & Game::GetWindow()
+{
+    return _window;
+}
+
+sf::Event Game::GetInput()
+{
+    sf::Event event;
+    _window.pollEvent(event);
+    return event;
+}
+
 void Game::GameLoop()
 {
     sf::Event event;
@@ -51,6 +71,7 @@ void Game::GameLoop()
             case GameState::Playing:
             {
                 _window.clear(sf::Color(0, 0, 0));
+                _manager.UpdateAll();
                 _manager.DrawAll(_window);
                 _window.display();
 

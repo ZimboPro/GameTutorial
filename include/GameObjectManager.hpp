@@ -16,9 +16,12 @@ class GameObjectManager
         VisibleGameObject * Get(std::string name) const;
 
         void DrawAll(sf::RenderWindow & window);
+        void UpdateAll();
     
     private:
         std::map<std::string, VisibleGameObject *> _objects;
+
+        sf::Clock clock;
 
         struct GameObjectDeallocator
         {

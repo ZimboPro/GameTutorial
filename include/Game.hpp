@@ -9,6 +9,10 @@ class Game
 {
     public:
         static void Start();
+        static sf::RenderWindow & GetWindow();
+        static sf::Event GetInput();
+        static int SCREEN_WIDTH;
+        static int SCREEN_HEIGHT;
 
     private:
         Game();

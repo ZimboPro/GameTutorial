@@ -1,4 +1,5 @@
 #include <GameObjectManager.hpp>
+#include <Game.hpp>
 
 GameObjectManager::GameObjectManager()
 {}
@@ -43,5 +44,17 @@ void GameObjectManager::DrawAll(sf::RenderWindow & window)
     {
         results->second->Draw(window);
         results++;
+    }
+}
+
+void GameObjectManager::UpdateAll()
+{
+    std::map<std::string,VisibleGameObject*>::const_iterator itr = _objects.begin();
+    float timeDelta = this->clock.restart().asSeconds();
+
+    while(itr != _objects.end())
+    {
+        itr->second->Update(timeDelta);
+        itr++;
     }
 }
