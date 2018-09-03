@@ -1,9 +1,11 @@
 #include <Game.hpp>
 #include <SplashScreen.hpp>
 #include <MainMenu.hpp>
+#include <PlayerPaddle.hpp>
 
 Game::GameState Game::_gameState = GameState::Uninitialized;
 sf::RenderWindow Game::_window;
+GameObjectManager Game::_manager;
 
 Game::Game()
 {}
@@ -18,6 +20,12 @@ void Game::Start()
     
     _window.create(sf::VideoMode(1024, 768, 32), "Pang!");
     _gameState = Game::ShowingSplash;
+
+    PlayerPaddle * player1 = new PlayerPaddle();
+    player1->Load("../resources/paddle.png");
+    player1->SetPosition((1024 >> 1) - 45, 700);
+
+    _manager.Add("Paddle1", player1);
 
     while(!IsExiting())
     {
@@ -42,17 +50,23 @@ void Game::GameLoop()
         {
             case GameState::Playing:
             {
-                _window.clear(sf::Color(255, 0, 0));
+                _window.clear(sf::Color(0, 0, 0));
+                _manager.DrawAll(_window);
                 _window.display();
 
                 if (event.type == sf::Event::Closed)
                     _gameState = GameState::Exiting;
+                if (event.type == sf::Event::KeyPressed)
+                {
+                    if (event.key.code == sf::Keyboard::Escape)
+                        ShowMainMenu();
+                }
                 break;
             }
             case GameState::ShowingSplash:
             {
                 ShowSplashScreen();
-                _gameState = GameState::ShowingMenu;
+                
                 break;
             }
             case GameState::ShowingMenu:
@@ -68,7 +82,7 @@ void Game::ShowSplashScreen()
 {
     SplashScreen screen;
     screen.Show(_window);
-    _gameState = ShowingSplash;
+    _gameState = GameState::ShowingMenu;
 }
 
 void Game::ShowMainMenu()

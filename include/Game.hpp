@@ -3,6 +3,7 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <GameObjectManager.hpp>
 
 class Game
 {
@@ -24,6 +25,7 @@ class Game
         
         static GameState _gameState;
         static sf::RenderWindow _window;
+        static GameObjectManager _manager;
 };
 
 #endif

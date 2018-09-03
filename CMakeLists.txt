@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 project(pong)
 
 set(CMAKE_CXX_STANDARD 11)
-# set(CMAKE_CXX_FLAGS "-Wall -Werror -stdlib=libc++")
+if (APPLE)
+    set(CMAKE_CXX_FLAGS "-stdlib=libc++")
+endif(APPLE)
 
 include(FetchContent)
 
@@ -30,6 +32,9 @@ add_executable(
     src/Game.cpp
     src/SplashScreen.cpp
     src/MainMenu.cpp
+    src/PlayerPaddle.cpp
+    src/VisibleGameObject.cpp
+    src/GameObjectManager.cpp
 )
 
 target_link_libraries(pong sfml-graphics sfml-window sfml-system sfml-audio)
