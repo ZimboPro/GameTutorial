@@ -36,6 +36,10 @@ add_executable(
     src/VisibleGameObject.cpp
     src/GameObjectManager.cpp
     src/GameBall.cpp
+    src/ServiceLocator.cpp
+    src/SFMLSoundProvider.cpp
+    src/SoundFileCache.cpp
+    src/AIPaddle.cpp
 )
 
 target_link_libraries(pong sfml-graphics sfml-window sfml-system sfml-audio)

@@ -50,7 +50,6 @@ void GameBall::Update(float timeElapsed)
         sf::Rect<float> p1BB = player1->GetBoundingRect();
 
         if (p1BB.intersects(GetBoundingRect()))
-        // if (GetPosition().x + moveByX + (GetSprite().getLocalBounds().width /2),GetPosition().y + (GetSprite().getLocalBounds().height /2) + moveByY)
         {
             sf::Rect<float> bBB = GetBoundingRect();
             _angle = 360.0f - (_angle - 180.f);
@@ -86,8 +85,6 @@ void GameBall::Update(float timeElapsed)
             _angle =  180 - _angle;
             moveByY = -moveByY;
         }
-
-    
         
         if(GetPosition().y + GetHeight()/2 + moveByY >= Game::SCREEN_HEIGHT)
         {
